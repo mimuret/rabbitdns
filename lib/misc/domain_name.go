@@ -15,21 +15,14 @@
 
 package misc
 
-import "strings"
+import (
+	"strings"
 
-func FQDN(dn string) string {
-	bs := []byte(dn)
-	if len(bs) == 0 {
-		return "."
-	}
-	if bs[len(bs)-1] != '.' {
-		return dn + "."
-	}
-	return dn
-}
+	"github.com/miekg/dns"
+)
 
 func Labels(dn string) []string {
-	dn = FQDN(dn)
+	dn = dns.Fqdn(dn)
 	labels := strings.Split(dn, ".")
 	return labels[:len(labels)-1]
 }

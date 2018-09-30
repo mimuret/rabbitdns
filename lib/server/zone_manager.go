@@ -72,7 +72,7 @@ func (m *zoneManager) ReadZone(zoneFile string) error {
 		return err
 	}
 	origin := filepath.Base(zoneFile)
-	origin = FQDN(origin)
+	origin = dns.Fqdn(origin)
 	origin_labels := Labels(origin)
 
 	zoneNode := m.zoneSet.AddNode(origin_labels)
@@ -111,7 +111,7 @@ func (m *zoneManager) ReadZone(zoneFile string) error {
 				}
 			}
 			node := zoneTree.AddRR(x.RR)
-			if x.RR.Header().Rrtype == dns.TypeNS && FQDN(x.RR.Header().Name) != origin {
+			if x.RR.Header().Rrtype == dns.TypeNS && dns.Fqdn(x.RR.Header().Name) != origin {
 				node.Auth = false
 			}
 		}
@@ -175,7 +175,7 @@ func (m *zoneManager) DeleteZones() {
 	for k, v := range m.loading {
 		if v == false {
 			origin := filepath.Base(k)
-			origin = FQDN(origin)
+			origin = dns.Fqdn(origin)
 			origin_labels := Labels(origin)
 
 			if node := m.zoneSet.SearchNode(origin_labels, true); node != nil {

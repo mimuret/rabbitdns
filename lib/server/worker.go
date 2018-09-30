@@ -242,7 +242,7 @@ func (s *worker) servZoneResponse(w dns.ResponseWriter, m *dns.Msg, req *dns.Msg
 				dname.Header().Ttl = 0
 				m.Ns = append(m.Ns, dname)
 			} else if !isWildcard {
-				wildcard := FQDN("*." + strings.Join(labels[1:], "."))
+				wildcard := dns.Fqdn("*." + strings.Join(labels[1:], "."))
 				err = s.servZoneResponse(w, m, req, qname, wildcard, stype, zoneName, zoneTree, count-1, true)
 			}
 		}

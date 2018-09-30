@@ -14,20 +14,3 @@
 // limitations under the License.
 
 package misc
-
-import "testing"
-
-func TestFQDN(t *testing.T) {
-	if FQDN("") != "." {
-		t.Fatalf(" empty string FQDN is \".\"")
-	}
-	if FQDN(".") != "." {
-		t.Fatalf(" .  FQDN is \".\"")
-	}
-	if FQDN("example.jp") != "example.jp." {
-		t.Fatalf("example.jp  FQDN is \"example.jp.\"")
-	}
-	if FQDN("example.jp.") != "example.jp." {
-		t.Fatalf("example.jp.  FQDN is \"example.jp.\"")
-	}
-}
