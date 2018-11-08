@@ -5,35 +5,48 @@ import "google/protobuf/empty.proto";
 package api;
 
 service RabbitDNS {
-  rpc Reconfig (google.protobuf.Empty) returns (google.protobuf.Empty){};
-  rpc Reload (google.protobuf.Empty) returns (google.protobuf.Empty){};
-  rpc ReloadZone (ReloadRequest) returns (google.protobuf.Empty){};
-  rpc GetZones (google.protobuf.Empty) returns (GetZonesResponse){};
-  rpc GetMonitors (google.protobuf.Empty) returns (GetMonitorsResponse){};
-  rpc GetServices (google.protobuf.Empty) returns (GetServicesResponse){};
-}
-message ReloadRequest {
-  string zonename = 1;
-}
-message GetZonesResponse {
-  repeated Zone zones = 1;
-}
-message GetServicesResponse {
-  repeated Service services = 1;
-}
-message GetMonitorsResponse {
-  repeated Monitor monitors = 1;
+  rpc Delete (DeleteResourceRequest) returns (ResourcesResponses){};
+  rpc Create (WriteResourcesRequest) returns (WriteResourcesResponse){};
+  rpc Apply  (WriteResourcesRequest) returns (WriteResourcesResponse){};
+
+  rpc Get (GetResourceRequest) returns (GetResourceResponse){};
 }
 
-message Zone {
+
+message Resource {
   string name = 1;
+  string kind = 2;
+  string spec = 3;
 }
 
-message Service {
-  string name = 1;
+message ResourceRequest {
+  optional string name = 1;
 }
 
-message Monitor {
-  string name = 1;
+message ResourceResponse {
+  Resource resource = 1;
+  int32 Status = 2;
+  string ErrorMessage = 3;
 }
 
+message GetResourceRequest {
+  ResourceRequest request = 1;
+}
+message GetResourceResponse {
+  repeated ResourceResponse Response = 1;
+}
+
+message WriteResourcesRequest {
+  repeated Resource resources = 1;
+}
+
+message WriteResourcesResponse {
+  repeated ResourceResponse Response = 1;
+}
+
+message DeleteResourceRequest {
+  repeated ResourceRequest resources = 1; 
+}
+message GetResourceResponse {
+  repeated ResourceResponse Response = 1;
+}

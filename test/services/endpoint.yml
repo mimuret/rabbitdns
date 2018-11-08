@@ -1,5 +1,8 @@
-rrtype: A
-service:
-  type: endpoint
-  value: 192.168.0.1
-  monitor: ok
+apiVersion: v1
+kind: service
+spec:
+  rrtype: A
+  service:
+    type: endpoint
+    value: 192.168.0.1
+    monitor: ok
