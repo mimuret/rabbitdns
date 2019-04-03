@@ -25,6 +25,7 @@ _testmain.go
 *.test
 *.prof
 
-vendor
-.vscode
+/vendor
+/.vscode
+/.go-pkg-cache
 

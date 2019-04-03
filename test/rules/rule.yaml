@@ -1,0 +1,89 @@
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaRule
+metadata:
+	name: www
+spec:
+  rules:
+    - match:
+        source:
+          - 192.168.0.0/16
+          - 172/16.0.0/12
+          - 10.0.0.0/8
+        rtype:
+          - A
+          - AAAA
+      dest:
+        - endpoint: local
+    - match:
+        rtype:
+          - A
+          - AAAA
+      dest:
+        - rule: remote
+
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaRule
+metadata:
+	name: remote
+spec:
+  rules:
+    - match:
+        location:
+          - JP
+      dest:
+        - rule: japan
+    - match:
+        location:
+          - AS
+      dest:
+        - rule: asia
+    - dest:
+        - rule: default
+
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaRule
+metadata:
+	name: japan
+spec:
+  rules:
+      dest:
+# endpoint is round robin
+        - endpoint: jp1
+          weight: 80
+        - endpoint: jp2
+          weight: 20
+
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaRule
+metadata:
+	name: asia
+spec:
+  rules:
+      dest:
+# endpoint is failover
+        - endpoint: asia1
+          priority: 100
+        - endpoint: asia2
+          priority: 10
+
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaRule
+metadata:
+	name: default
+spec:
+  rules:
+      dest:
+# default1 and default2 is higher priority, both active endpoint.
+        - endpoint: default1
+          priority: 100
+          weight: 80
+        - endpoint: default2
+          priority: 100
+          weight: 20
+        - endpoint: default3
+          priority: 10

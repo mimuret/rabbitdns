@@ -98,7 +98,6 @@ func serv(cb *cobra.Command, args []string) {
 			} else {
 				// reload config
 				utils.SetLogLevel(newConfig.LogLevel)
-
 			}
 		}
 	}

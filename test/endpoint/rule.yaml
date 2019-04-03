@@ -1,0 +1,60 @@
+---
+apiVersion: rabbitdns.dev/v1
+kind: DynaEndpoint
+metadata:
+	name: local
+spec:
+  - name: host1
+    probe:
+      - http:
+        target: 192.168.0.1
+        scheme: HTTP
+        path: /health
+        port: 80
+      - http:
+        target: 2001:db8::2
+        scheme: HTTP
+        path: /health
+        port: 80
+    resources:
+      ipv4addresses:
+        - 192.168.0.1
+        - 192.168.0.2
+      ipv6addresses:
+        - 2001:db8::1
+        - 2001:db8::2
+      cname: www.example.com
+      text:
+        - "hogehoge"
+      srv:
+        - priority: 1
+          weight: 0
+          port: 80
+          target: www.example.jp
+        - priority: 2
+          weight: 0
+          port: 80
+          target: www.example.com
+  - name: host2
+    probe:
+      - ping:
+        target: 192.168.0.3
+      - ping:
+        target: 2001:db8::3
+    resources:
+      ipv4addresses:
+        - 192.168.0.3
+      ipv6addresses:
+        - 2001:db8::3
+      cname: www.example.net
+      text:
+        - "foo"
+      srv:
+        - priority: 1
+          weight: 0
+          port: 80
+          target: www.example.org
+        - priority: 2
+          weight: 0
+          port: 80
+          target: www.example.biz
